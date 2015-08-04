@@ -8,7 +8,9 @@ Cabinate - File Manager for Android
 - I prefer building via the command line on GNU/Linux. On my machine I have the following env variables set correctly:
 
   `JAVA_HOME`    - JDK installation dir
+
   `ANDROID_HOME` - Android SDK installation dir
+
   `PATH`         - contains $GRADLE_HOME/bin $ANDROID_HOME/tools $ANDROID_HOME/platform-tools and JAVA_HOME/bin
 
   Where, $GRADLE_HOME is this directory where Gradle is installed.
