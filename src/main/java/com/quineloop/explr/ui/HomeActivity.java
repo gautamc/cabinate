@@ -30,7 +30,7 @@ public class HomeActivity extends Activity {
 
         dir_listing = new DirListingAdapter(
             this,
-            FileSystem.list(FileSystem.SHOW_HIDDEN|FileSystem.SORT_BY_MTIME)
+            FileSystem.list(FileSystem.SORT_BY_NAME)
         );
 
         GridView grid_view = (GridView) findViewById(R.id.gridview);
@@ -43,7 +43,7 @@ public class HomeActivity extends Activity {
                     if ( entry.isDirectory() ) {
                         dir_listing.changeEntries(
                             entry,
-                            FileSystem.list(entry, FileSystem.SHOW_HIDDEN|FileSystem.SORT_BY_MTIME)
+                            FileSystem.list(entry, FileSystem.SORT_BY_NAME)
                         );
                     }
                 }

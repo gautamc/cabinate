@@ -3,6 +3,7 @@ package com.quineloop.explr.utils;
 import java.io.File;
 import java.util.Comparator;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 public class FileSystem {
 
@@ -17,15 +18,25 @@ public class FileSystem {
         int options = optional_args.length > 0 ? optional_args[0] : 0;
         File[] all_roots = File.listRoots();
         if( all_roots.length > 0 ) {
-            // (options & SHOW_HIDDEN) == 0
-            // (options & SORT_BY_MTIME) == 0
-            // (options & SORT_BY_NAME) == 0
             File[] listing = new File(all_roots[0].getAbsolutePath()).listFiles();
-            if( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
+
+            if( (options & SHOW_HIDDEN) == 0 ) {
+                listing = filterHidden(listing);
+            }
+
+            if ( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
                 Arrays.sort(
                     listing, new Comparator<File>(){
                         public int compare(File f1, File f2){
                             return Long.compare(f2.lastModified(), f1.lastModified());
+                        }
+                    }
+                );
+            } else if ( (options & SORT_BY_NAME) == SORT_BY_NAME ) {
+                Arrays.sort(
+                    listing, new Comparator<File>(){
+                        public int compare(File f1, File f2){
+                            return f1.getName().toLowerCase().compareTo(f2.getName().toLowerCase());
                         }
                     }
                 );
@@ -37,11 +48,13 @@ public class FileSystem {
 
     public static File[] list(File dir, int... optional_args) {
         int options = optional_args.length > 0 ? optional_args[0] : 0;
-        // (options & SHOW_HIDDEN) == 0
-        // (options & SORT_BY_MTIME) == 0
-        // (options & SORT_BY_NAME) == 0
         File[] listing = dir.listFiles();
-        if( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
+
+        if( (options & SHOW_HIDDEN) == 0 ) {
+            listing = filterHidden(listing);
+        }
+
+        if ( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
             Arrays.sort(
                 listing, new Comparator<File>(){
                     public int compare(File f1, File f2){
@@ -49,8 +62,26 @@ public class FileSystem {
                     }
                 }
             );
+        } else if ( (options & SORT_BY_NAME) == SORT_BY_NAME ) {
+            Arrays.sort(
+                listing, new Comparator<File>(){
+                    public int compare(File f1, File f2){
+                        return f1.getName().toLowerCase().compareTo(f2.getName().toLowerCase());
+                    }
+                }
+            );
         }
         return listing;
+    }
+
+    private static File[] filterHidden(File[] listing){
+        ArrayList<File> filtered_listing = new ArrayList<>();
+        for(File file : listing) {
+            if( !file.isHidden() ) {
+                filtered_listing.add(file);
+            }
+        }
+        return filtered_listing.toArray(new File[filtered_listing.size()]);
     }
 
 }
