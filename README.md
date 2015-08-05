@@ -27,7 +27,7 @@ Cabinate - File Manager for Android
 
 <h2>Status</h2>
 
-- This is codebase is very much work in progress.
+- This codebase is very much work in progress.
 - As of now, I only care about making it work on my phone which runs Android 5.1.1 (API level 22)
 
 ![Screenshot](art/scrn1.png)
