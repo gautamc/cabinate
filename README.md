@@ -21,13 +21,13 @@ Cabinate - File Manager for Android
 
 - Install the debug apk via:
 
-  `adb -s DEVICE_ID install -r build/outputs/apk/birdgrep-debug.apk `
+  `adb -s DEVICE_ID install -r build/outputs/apk/cabinate-debug.apk`
 
   Where, DEVICE_ID is the obtained via: `adb devices -l`
 
 <h2>Status</h2>
 
 - This is codebase is very much work in progress.
-- As of now, I only care about making it work only on my phone which runs Android 5.1.1 (API level 22)
+- As of now, I only care about making it work on my phone which runs Android 5.1.1 (API level 22)
 
 ![Screenshot](art/scrn1.png)
