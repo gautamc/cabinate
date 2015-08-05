@@ -28,7 +28,10 @@ public class HomeActivity extends Activity {
         ActionBar action_bar = getActionBar();
         action_bar.setDisplayHomeAsUpEnabled(true);
 
-        dir_listing = new DirListingAdapter(this, FileSystem.list() );
+        dir_listing = new DirListingAdapter(
+            this,
+            FileSystem.list(FileSystem.SHOW_HIDDEN|FileSystem.SORT_BY_MTIME)
+        );
 
         GridView grid_view = (GridView) findViewById(R.id.gridview);
         grid_view.setAdapter(dir_listing);
@@ -38,7 +41,10 @@ public class HomeActivity extends Activity {
                     int position, long id) {
                     File entry = (File) dir_listing.getItem(position);
                     if ( entry.isDirectory() ) {
-                        dir_listing.changeEntries(entry, FileSystem.list(entry));
+                        dir_listing.changeEntries(
+                            entry,
+                            FileSystem.list(entry, FileSystem.SHOW_HIDDEN|FileSystem.SORT_BY_MTIME)
+                        );
                     }
                 }
             }
