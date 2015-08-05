@@ -1,6 +1,8 @@
 package com.quineloop.explr.utils;
 
 import java.io.File;
+import java.util.Comparator;
+import java.util.Arrays;
 
 public class FileSystem {
 
@@ -18,7 +20,17 @@ public class FileSystem {
             // (options & SHOW_HIDDEN) == 0
             // (options & SORT_BY_MTIME) == 0
             // (options & SORT_BY_NAME) == 0
-            return (new File(all_roots[0].getAbsolutePath()).listFiles());
+            File[] listing = new File(all_roots[0].getAbsolutePath()).listFiles();
+            if( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
+                Arrays.sort(
+                    listing, new Comparator<File>(){
+                        public int compare(File f1, File f2){
+                            return Long.compare(f2.lastModified(), f1.lastModified());
+                        }
+                    }
+                );
+            }
+            return listing;
         }
         return NO_FILES;
     }
@@ -28,7 +40,17 @@ public class FileSystem {
         // (options & SHOW_HIDDEN) == 0
         // (options & SORT_BY_MTIME) == 0
         // (options & SORT_BY_NAME) == 0
-        return dir.listFiles();
+        File[] listing = dir.listFiles();
+        if( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
+            Arrays.sort(
+                listing, new Comparator<File>(){
+                    public int compare(File f1, File f2){
+                        return Long.compare(f2.lastModified(), f1.lastModified());
+                    }
+                }
+            );
+        }
+        return listing;
     }
 
 }
