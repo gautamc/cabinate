@@ -19,29 +19,7 @@ public class FileSystem {
         File[] all_roots = File.listRoots();
         if( all_roots.length > 0 ) {
             File[] listing = new File(all_roots[0].getAbsolutePath()).listFiles();
-
-            if( (options & SHOW_HIDDEN) == 0 ) {
-                listing = filterHidden(listing);
-            }
-
-            if ( (options & SORT_BY_MTIME) == SORT_BY_MTIME ) {
-                Arrays.sort(
-                    listing, new Comparator<File>(){
-                        public int compare(File f1, File f2){
-                            return Long.compare(f2.lastModified(), f1.lastModified());
-                        }
-                    }
-                );
-            } else if ( (options & SORT_BY_NAME) == SORT_BY_NAME ) {
-                Arrays.sort(
-                    listing, new Comparator<File>(){
-                        public int compare(File f1, File f2){
-                            return f1.getName().toLowerCase().compareTo(f2.getName().toLowerCase());
-                        }
-                    }
-                );
-            }
-            return listing;
+            return filterAndSort(listing, options);
         }
         return NO_FILES;
     }
@@ -49,7 +27,10 @@ public class FileSystem {
     public static File[] list(File dir, int... optional_args) {
         int options = optional_args.length > 0 ? optional_args[0] : 0;
         File[] listing = dir.listFiles();
+        return filterAndSort(listing, options);
+    }
 
+    private static File[] filterAndSort(File[] listing, int options) {
         if( (options & SHOW_HIDDEN) == 0 ) {
             listing = filterHidden(listing);
         }
@@ -74,7 +55,7 @@ public class FileSystem {
         return listing;
     }
 
-    private static File[] filterHidden(File[] listing){
+    private static File[] filterHidden(File[] listing) {
         ArrayList<File> filtered_listing = new ArrayList<>();
         for(File file : listing) {
             if( !file.isHidden() ) {
