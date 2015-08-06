@@ -19,14 +19,14 @@ public class HomeActivity extends Activity {
     
     private DirListingAdapter dir_listing;
     private int count_back_click_for_exit = 0;
+    private ActionBar action_bar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        ActionBar action_bar = getActionBar();
-        action_bar.setDisplayHomeAsUpEnabled(true);
+        action_bar = getActionBar();
 
         dir_listing = new DirListingAdapter(
             this,
@@ -45,6 +45,7 @@ public class HomeActivity extends Activity {
                             entry,
                             FileSystem.list(entry, FileSystem.SORT_BY_NAME)
                         );
+                        updateUpAction();
                     }
                 }
             }
@@ -73,6 +74,7 @@ public class HomeActivity extends Activity {
                 ).show();
             }
         }
+        updateUpAction();
     }
 
     public boolean onNavigateUp() {
@@ -86,6 +88,16 @@ public class HomeActivity extends Activity {
                 null, FileSystem.list()
             );
         }
+        updateUpAction();
         return false;
+    }
+
+    private void updateUpAction() {
+        File parent_dir = dir_listing.getParent();
+        if( parent_dir != null ) {
+            action_bar.setDisplayHomeAsUpEnabled(true);
+        } else {
+            action_bar.setDisplayHomeAsUpEnabled(false);
+        }
     }
 }
