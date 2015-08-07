@@ -51,6 +51,16 @@ public class FileSystem {
                     }
                 }
             );
+        } else if ( (options & SORT_BY_SIZE) == SORT_BY_SIZE ) {
+            Arrays.sort(
+                listing, new Comparator<File>(){
+                    public int compare(File f1, File f2){
+                        long sz1 = f1.isDirectory() ? 0 : f1.length();
+                        long sz2 = f2.isDirectory() ? 0 : f2.length();
+                        return java.lang.Long.compare(sz1, sz2);
+                    }
+                }
+            );
         }
         return listing;
     }

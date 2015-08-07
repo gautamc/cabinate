@@ -88,6 +88,17 @@ public class HomeActivity extends Activity {
                     );
                 }
                 return true;
+            case R.id.sort_size:
+                if( cwd != null ) {
+                    dir_listing.changeEntries(
+                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_SIZE)
+                    );
+                } else {
+                    dir_listing.changeEntries(
+                        null, FileSystem.list(FileSystem.SORT_BY_SIZE)
+                    );
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

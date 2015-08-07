@@ -3,4 +3,5 @@
     <string name="app_name">Cabinet</string>
     <string name="sort_mtime">Sort by last modified</string>
     <string name="sort_name">sort by name</string>
+    <string name="sort_size">sort by size</string>
 </resources>
