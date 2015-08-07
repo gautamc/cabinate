@@ -22,6 +22,7 @@ public class HomeActivity extends Activity {
     
     private DirListingAdapter dir_listing;
     private int count_back_click_for_exit = 0;
+    private int listing_options = 0;
     private ActionBar action_bar;
 
     @Override
@@ -64,40 +65,18 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        File cwd = dir_listing.getCWD();
         switch( item.getItemId() ) {
             case R.id.sort_mtime:
-                if( cwd != null ) {
-                    dir_listing.changeEntries(
-                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_MTIME)
-                    );
-                } else {
-                    dir_listing.changeEntries(
-                        null, FileSystem.list(FileSystem.SORT_BY_MTIME)
-                    );
-                }
+                this.listing_options = FileSystem.SORT_BY_MTIME;
+                sortListing();
                 return true;
             case R.id.sort_name:
-                if( cwd != null ) {
-                    dir_listing.changeEntries(
-                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_NAME)
-                    );
-                } else {
-                    dir_listing.changeEntries(
-                        null, FileSystem.list(FileSystem.SORT_BY_NAME)
-                    );
-                }
+                this.listing_options = FileSystem.SORT_BY_NAME;
+                sortListing();
                 return true;
             case R.id.sort_size:
-                if( cwd != null ) {
-                    dir_listing.changeEntries(
-                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_SIZE)
-                    );
-                } else {
-                    dir_listing.changeEntries(
-                        null, FileSystem.list(FileSystem.SORT_BY_SIZE)
-                    );
-                }
+                this.listing_options = FileSystem.SORT_BY_SIZE;
+                sortListing();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -150,6 +129,19 @@ public class HomeActivity extends Activity {
             action_bar.setDisplayHomeAsUpEnabled(true);
         } else {
             action_bar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
+
+    private void sortListing() {
+        File cwd = dir_listing.getCWD();
+        if( cwd != null ) {
+            dir_listing.changeEntries(
+                cwd, FileSystem.list(cwd, this.listing_options)
+            );
+        } else {
+            dir_listing.changeEntries(
+                null, FileSystem.list(this.listing_options)
+            );
         }
     }
 }
