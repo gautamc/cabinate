@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.content.Context;
 import android.view.View;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.widget.GridView;
 import android.widget.AdapterView;
@@ -59,6 +60,37 @@ public class HomeActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        File cwd = dir_listing.getCWD();
+        switch( item.getItemId() ) {
+            case R.id.sort_mtime:
+                if( cwd != null ) {
+                    dir_listing.changeEntries(
+                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_MTIME)
+                    );
+                } else {
+                    dir_listing.changeEntries(
+                        null, FileSystem.list(FileSystem.SORT_BY_MTIME)
+                    );
+                }
+                return true;
+            case R.id.sort_name:
+                if( cwd != null ) {
+                    dir_listing.changeEntries(
+                        cwd, FileSystem.list(cwd, FileSystem.SORT_BY_NAME)
+                    );
+                } else {
+                    dir_listing.changeEntries(
+                        null, FileSystem.list(FileSystem.SORT_BY_NAME)
+                    );
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void onBackPressed() {

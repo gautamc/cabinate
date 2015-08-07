@@ -28,6 +28,10 @@ public class DirListingAdapter extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
+    public File getCWD() {
+        return this.cwd;
+    }
+
     public File getParent() {
         if( this.cwd != null ) {
             File parent_wd = this.cwd.getParentFile();
