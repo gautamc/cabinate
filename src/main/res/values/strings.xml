@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cabinet</string>
+    <string name="sort_mtime">Sort by last modified</string>
+    <string name="sort_name">sort by name</string>
 </resources>

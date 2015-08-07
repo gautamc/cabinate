@@ -5,6 +5,8 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.content.Context;
 import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.GridView;
 import android.widget.AdapterView;
 
@@ -50,6 +52,13 @@ public class HomeActivity extends Activity {
                 }
             }
         );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_activity_actions, menu);
+        return true;
     }
 
     public void onBackPressed() {
