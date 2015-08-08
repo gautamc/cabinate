@@ -32,9 +32,10 @@ public class HomeActivity extends Activity {
 
         action_bar = getActionBar();
 
+        listing_options = FileSystem.SORT_BY_NAME;
         dir_listing = new DirListingAdapter(
             this,
-            FileSystem.list(FileSystem.SORT_BY_NAME)
+            FileSystem.list(listing_options)
         );
 
         GridView grid_view = (GridView) findViewById(R.id.gridview);
@@ -47,7 +48,7 @@ public class HomeActivity extends Activity {
                     if ( entry.isDirectory() ) {
                         dir_listing.changeEntries(
                             entry,
-                            FileSystem.list(entry, FileSystem.SORT_BY_NAME)
+                            FileSystem.list(entry, listing_options)
                         );
                         updateUpAction();
                     }
@@ -88,14 +89,14 @@ public class HomeActivity extends Activity {
         if( parent_dir != null ) {
             this.count_back_click_for_exit = 0;
             dir_listing.changeEntries(
-                parent_dir, FileSystem.list(parent_dir)
+                parent_dir, FileSystem.list(parent_dir, this.listing_options)
             );
         } else {
             if( this.count_back_click_for_exit > 0 ) {
                 finish();
             } else {
                 dir_listing.changeEntries(
-                    null, FileSystem.list()
+                    null, FileSystem.list(this.listing_options)
                 );
                 this.count_back_click_for_exit++;
                 android.widget.Toast.makeText(
@@ -112,11 +113,11 @@ public class HomeActivity extends Activity {
         File parent_dir = dir_listing.getParent();
         if( parent_dir != null ) {
             dir_listing.changeEntries(
-                parent_dir, FileSystem.list(parent_dir)
+                parent_dir, FileSystem.list(parent_dir, listing_options)
             );
         } else {
             dir_listing.changeEntries(
-                null, FileSystem.list()
+                null, FileSystem.list(listing_options)
             );
         }
         updateUpAction();
