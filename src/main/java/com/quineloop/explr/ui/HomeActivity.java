@@ -45,12 +45,20 @@ public class HomeActivity extends Activity {
                 public void onItemClick(AdapterView<?> parent, View v,
                     int position, long id) {
                     File entry = (File) dir_listing.getItem(position);
-                    if ( entry.isDirectory() ) {
-                        dir_listing.changeEntries(
-                            entry,
-                            FileSystem.list(entry, listing_options)
-                        );
-                        updateUpAction();
+                    if( entry.canRead() ) {
+                        if ( entry.isDirectory() ) {
+                            dir_listing.changeEntries(
+                                entry,
+                                FileSystem.list(entry, listing_options)
+                            );
+                            updateUpAction();
+                        }
+                    } else {
+                        android.widget.Toast.makeText(
+                            parent.getContext(),
+                            "Selection is not readable.",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show();
                     }
                 }
             }
