@@ -1,5 +1,10 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+  <style name="CabinateTheme" parent="@android:style/Theme.Holo.Light">
+    <item name="android:actionOverflowButtonStyle">@style/CabinateOverFlow</item>
+    <item name="android:actionOverflowMenuStyle">@style/CabinateOverflowMenu</item>
+  </style>
+
   <style name="scrollbar_shape_style">
     <item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
     <item name="android:scrollbarStyle">outsideOverlay</item>
