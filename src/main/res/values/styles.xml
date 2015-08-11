@@ -3,6 +3,10 @@
   <style name="CabinateTheme" parent="@android:style/Theme.Holo.Light">
     <item name="android:actionOverflowButtonStyle">@style/CabinateOverFlow</item>
     <item name="android:actionOverflowMenuStyle">@style/CabinateOverflowMenu</item>
+    <item name="android:textAppearanceLargePopupMenu">@style/CabinatePopupTextAppearanceLarge</item>
+    <item name="android:textAppearanceSmallPopupMenu">@style/CabinatePopupTextAppearanceSmall</item>
+    <item name="android:listDivider">@null</item>
+    <item name="android:listPreferredItemHeightSmall">28dip</item>
   </style>
 
   <style name="scrollbar_shape_style">
