@@ -17,6 +17,14 @@
     <item name="android:dropDownVerticalOffset">-50dip</item>
   </style>
 
+  <style name="CabinatePopupTextAppearanceLarge">
+    <item name="android:textSize">14sp</item>
+  </style>
+
+  <style name="CabinatePopupTextAppearanceSmall">
+    <item name="android:textSize">10sp</item>
+  </style>
+
   <style name="scrollbar_shape_style">
     <item name="android:scrollbarAlwaysDrawVerticalTrack">false</item>
     <item name="android:scrollbarStyle">outsideOverlay</item>
