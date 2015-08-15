@@ -1,16 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:explr="http://schemas.android.com/apk/res-auto">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
   <item
       android:id="@+id/sort_mtime"
       android:showAsAction="never"
-      android:title="@string/sort_mtime"/>
+      android:checkable="true"
+      android:title="@string/sort_mtime" />
+
   <item
       android:id="@+id/sort_name"
       android:showAsAction="never"
-      android:title="@string/sort_name"/>
-<item
+      android:checkable="true"
+      android:title="@string/sort_name" />
+
+  <item
       android:id="@+id/sort_size"
       android:showAsAction="never"
-      android:title="@string/sort_size"/>
+      android:checkable="true"
+      android:title="@string/sort_size" />
+
+  <item
+      android:id="@+id/show_hidden"
+      android:showAsAction="never"
+      android:checkable="true"
+      android:title="@string/show_hidden" />
+
 </menu>
