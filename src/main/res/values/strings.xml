@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cabinet</string>
-    <string name="sort_mtime">Sort by last modified</string>
-    <string name="sort_name">sort by name</string>
-    <string name="sort_size">sort by size</string>
+  <string name="app_name">Cabinet</string>
+  <string name="sort_mtime">sort by time</string>
+  <string name="sort_name">sort by name</string>
+  <string name="sort_size">sort by size</string>
+  <string name="show_hidden">list hidden</string>
 </resources>
