@@ -10,6 +10,9 @@ import android.view.MenuItem;
 import android.view.MenuInflater;
 import android.widget.GridView;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import android.util.DisplayMetrics;
+import android.content.res.Configuration;
 
 import java.io.File;
 
@@ -54,10 +57,10 @@ public class HomeActivity extends Activity {
                             updateUpAction();
                         }
                     } else {
-                        android.widget.Toast.makeText(
+                        Toast.makeText(
                             parent.getContext(),
                             "Selection is not readable.",
-                            android.widget.Toast.LENGTH_SHORT
+                            Toast.LENGTH_SHORT
                         ).show();
                     }
                 }
@@ -92,6 +95,22 @@ public class HomeActivity extends Activity {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            System.err.println( "landscape - " + metrics.toString() );
+            Toast.makeText(this, "landscape - " + metrics.toString(), Toast.LENGTH_LONG).show();
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            System.err.println( "landscape - " + metrics.toString() );
+            Toast.makeText(this, "portrait - " + metrics.toString(), Toast.LENGTH_LONG).show();
+        }
+    }
+
     public void onBackPressed() {
         File parent_dir = dir_listing.getParent();
         if( parent_dir != null ) {
@@ -107,10 +126,10 @@ public class HomeActivity extends Activity {
                     null, FileSystem.list(this.listing_options)
                 );
                 this.count_back_click_for_exit++;
-                android.widget.Toast.makeText(
+                Toast.makeText(
                     this,
                     "Touch back once more to exit.",
-                    android.widget.Toast.LENGTH_SHORT
+                    Toast.LENGTH_SHORT
                 ).show();
             }
         }
