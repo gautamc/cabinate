@@ -90,6 +90,14 @@ public class HomeActivity extends Activity {
                 this.listing_options = FileSystem.SORT_BY_SIZE;
                 sortListing();
                 return true;
+            case R.id.show_hidden:
+                if ( (this.listing_options & FileSystem.SHOW_HIDDEN) == FileSystem.SHOW_HIDDEN ) {
+                    this.listing_options &= (~FileSystem.SHOW_HIDDEN);
+                } else {
+                    this.listing_options |= FileSystem.SHOW_HIDDEN;
+                }
+                sortListing();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
