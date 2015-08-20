@@ -27,6 +27,7 @@ public class HomeActivity extends Activity {
     private int count_back_click_for_exit = 0;
     private int listing_options = 0;
     private ActionBar action_bar;
+    private Menu action_bar_menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -72,29 +73,54 @@ public class HomeActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
+        action_bar_menu = menu;
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        MenuItem mtime_sort_opt = action_bar_menu.findItem(R.id.sort_mtime);
+        MenuItem name_sort_opt = action_bar_menu.findItem(R.id.sort_name);
+        MenuItem size_sort_opt = action_bar_menu.findItem(R.id.sort_size);
+        MenuItem show_hidden_opt = action_bar_menu.findItem(R.id.show_hidden);
         switch( item.getItemId() ) {
             case R.id.sort_mtime:
                 this.listing_options = FileSystem.SORT_BY_MTIME;
+                if( show_hidden_opt.isChecked() ) {
+                    this.listing_options |= FileSystem.SHOW_HIDDEN;
+                }
+                item.setChecked(true);
+                name_sort_opt.setChecked(false);
+                size_sort_opt.setChecked(false);
                 sortListing();
                 return true;
             case R.id.sort_name:
                 this.listing_options = FileSystem.SORT_BY_NAME;
+                if( show_hidden_opt.isChecked() ) {
+                    this.listing_options |= FileSystem.SHOW_HIDDEN;
+                }
+                item.setChecked(true);
+                size_sort_opt.setChecked(false);
+                mtime_sort_opt.setChecked(false);
                 sortListing();
                 return true;
             case R.id.sort_size:
                 this.listing_options = FileSystem.SORT_BY_SIZE;
+                if( show_hidden_opt.isChecked() ) {
+                    this.listing_options |= FileSystem.SHOW_HIDDEN;
+                }
+                item.setChecked(true);
+                mtime_sort_opt.setChecked(false);
+                name_sort_opt.setChecked(false);
                 sortListing();
                 return true;
             case R.id.show_hidden:
                 if ( (this.listing_options & FileSystem.SHOW_HIDDEN) == FileSystem.SHOW_HIDDEN ) {
                     this.listing_options &= (~FileSystem.SHOW_HIDDEN);
+                    item.setChecked(false);
                 } else {
                     this.listing_options |= FileSystem.SHOW_HIDDEN;
+                    item.setChecked(true);
                 }
                 sortListing();
                 return true;
