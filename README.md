@@ -31,3 +31,4 @@ Cabinate - File Manager for Android
 - As of now, I only care about making it work on my phone which runs Android 5.1.1 (API level 22)
 
 ![Screenshot](art/scrn1.png)
+![Screenshot](art/scrn2.png)
