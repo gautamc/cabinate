@@ -22,12 +22,18 @@ import com.quineloop.explr.utils.FileSystem;
 import com.quineloop.explr.widget.adapter.DirListingAdapter;
 
 public class HomeActivity extends Activity {
-    
+
     private DirListingAdapter dir_listing;
     private int count_back_click_for_exit = 0;
     private int listing_options = 0;
+    private boolean preview_imgs = false;
     private ActionBar action_bar;
     private Menu action_bar_menu;
+    private MenuItem mtime_sort_opt;
+    private MenuItem name_sort_opt;
+    private MenuItem size_sort_opt;
+    private MenuItem show_hidden_opt;
+    private MenuItem preview_imgs_opt;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,14 +52,16 @@ public class HomeActivity extends Activity {
         grid_view.setAdapter(dir_listing);
         grid_view.setOnItemClickListener(
             new GridView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View v,
-                    int position, long id) {
+                public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                     File entry = (File) dir_listing.getItem(position);
                     if( entry.canRead() ) {
                         if ( entry.isDirectory() ) {
+                            preview_imgs = false;
+                            preview_imgs_opt.setChecked(false);
                             dir_listing.changeEntries(
                                 entry,
-                                FileSystem.list(entry, listing_options)
+                                FileSystem.list(entry, listing_options),
+                                preview_imgs
                             );
                             updateUpAction();
                         }
@@ -74,15 +82,16 @@ public class HomeActivity extends Activity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_activity_actions, menu);
         action_bar_menu = menu;
+        mtime_sort_opt = action_bar_menu.findItem(R.id.sort_mtime);
+        name_sort_opt = action_bar_menu.findItem(R.id.sort_name);
+        size_sort_opt = action_bar_menu.findItem(R.id.sort_size);
+        show_hidden_opt = action_bar_menu.findItem(R.id.show_hidden);
+        preview_imgs_opt = action_bar_menu.findItem(R.id.preview_images);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        MenuItem mtime_sort_opt = action_bar_menu.findItem(R.id.sort_mtime);
-        MenuItem name_sort_opt = action_bar_menu.findItem(R.id.sort_name);
-        MenuItem size_sort_opt = action_bar_menu.findItem(R.id.sort_size);
-        MenuItem show_hidden_opt = action_bar_menu.findItem(R.id.show_hidden);
         switch( item.getItemId() ) {
             case R.id.sort_mtime:
                 this.listing_options = FileSystem.SORT_BY_MTIME;
@@ -124,6 +133,16 @@ public class HomeActivity extends Activity {
                 }
                 sortListing();
                 return true;
+            case R.id.preview_images:
+                if ( this.preview_imgs == true ) {
+                    this.preview_imgs = false;
+                    item.setChecked(false);
+                } else {
+                    this.preview_imgs = true;
+                    item.setChecked(true);
+                }
+                sortListing();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -149,15 +168,19 @@ public class HomeActivity extends Activity {
         File parent_dir = dir_listing.getParent();
         if( parent_dir != null ) {
             this.count_back_click_for_exit = 0;
+            this.preview_imgs = false;
+            preview_imgs_opt.setChecked(false);
             dir_listing.changeEntries(
-                parent_dir, FileSystem.list(parent_dir, this.listing_options)
+                parent_dir, FileSystem.list(parent_dir, this.listing_options), this.preview_imgs
             );
         } else {
             if( this.count_back_click_for_exit > 0 ) {
                 finish();
             } else {
+                this.preview_imgs = false;
+                preview_imgs_opt.setChecked(false);
                 dir_listing.changeEntries(
-                    null, FileSystem.list(this.listing_options)
+                    null, FileSystem.list(this.listing_options), this.preview_imgs
                 );
                 this.count_back_click_for_exit++;
                 Toast.makeText(
@@ -173,10 +196,14 @@ public class HomeActivity extends Activity {
     public boolean onNavigateUp() {
         File parent_dir = dir_listing.getParent();
         if( parent_dir != null ) {
+            this.preview_imgs = false;
+            preview_imgs_opt.setChecked(false);
             dir_listing.changeEntries(
                 parent_dir, FileSystem.list(parent_dir, listing_options)
             );
         } else {
+            this.preview_imgs = false;
+            preview_imgs_opt.setChecked(false);
             dir_listing.changeEntries(
                 null, FileSystem.list(listing_options)
             );
@@ -198,11 +225,11 @@ public class HomeActivity extends Activity {
         File cwd = dir_listing.getCWD();
         if( cwd != null ) {
             dir_listing.changeEntries(
-                cwd, FileSystem.list(cwd, this.listing_options)
+                cwd, FileSystem.list(cwd, this.listing_options), this.preview_imgs
             );
         } else {
             dir_listing.changeEntries(
-                null, FileSystem.list(this.listing_options)
+                null, FileSystem.list(this.listing_options), this.preview_imgs
             );
         }
     }

@@ -26,4 +26,10 @@
       android:checkable="true"
       android:title="@string/show_hidden" />
 
+  <item
+      android:id="@+id/preview_images"
+      android:showAsAction="never"
+      android:checkable="true"
+      android:title="@string/preview_images" />
+
 </menu>
