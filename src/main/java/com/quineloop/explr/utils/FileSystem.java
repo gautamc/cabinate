@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.Arrays;
 import java.util.ArrayList;
+import android.os.Environment;
 
 public class FileSystem {
 
@@ -16,9 +17,18 @@ public class FileSystem {
 
     public static File[] list(int... optional_args) {
         int options = optional_args.length > 0 ? optional_args[0] : 0;
-        File[] all_roots = File.listRoots();
-        if( all_roots.length > 0 ) {
-            File[] listing = new File(all_roots[0].getAbsolutePath()).listFiles();
+        File dir_to_list = new File("/mnt/sdcard");
+        if ( dir_to_list.exists() && dir_to_list.isDirectory() ) {
+        } else {
+            if( Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED ) {
+                dir_to_list = Environment.getExternalStorageDirectory();
+            } else {
+                File[] all_roots = File.listRoots();
+                dir_to_list = all_roots.length > 0 ? all_roots[0] : null;
+            }
+        }
+        if( dir_to_list != null ) {
+            File[] listing = new File(dir_to_list.getAbsolutePath()).listFiles();
             return filterAndSort(listing, options);
         }
         return NO_FILES;
