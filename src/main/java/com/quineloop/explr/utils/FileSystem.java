@@ -15,8 +15,7 @@ public class FileSystem {
     public static int SORT_BY_TYPE = 16;
     private static final File[] NO_FILES = {};
 
-    public static File[] list(int... optional_args) {
-        int options = optional_args.length > 0 ? optional_args[0] : 0;
+    public static File initialListingDir() {
         File dir_to_list = new File("/mnt/sdcard");
         if ( dir_to_list.exists() && dir_to_list.isDirectory() ) {
         } else {
@@ -27,6 +26,12 @@ public class FileSystem {
                 dir_to_list = all_roots.length > 0 ? all_roots[0] : null;
             }
         }
+        return dir_to_list;
+    }
+
+    public static File[] list(int... optional_args) {
+        int options = optional_args.length > 0 ? optional_args[0] : 0;
+        File dir_to_list = initialListingDir();
         if( dir_to_list != null ) {
             File[] listing = new File(dir_to_list.getAbsolutePath()).listFiles();
             return filterAndSort(listing, options);
