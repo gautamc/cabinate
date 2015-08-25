@@ -45,6 +45,7 @@ public class HomeActivity extends Activity {
         listing_options = FileSystem.SORT_BY_NAME;
         dir_listing = new DirListingAdapter(
             this,
+            FileSystem.initialListingDir(),
             FileSystem.list(listing_options)
         );
 

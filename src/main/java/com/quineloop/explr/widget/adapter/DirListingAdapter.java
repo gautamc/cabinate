@@ -25,15 +25,17 @@ public class DirListingAdapter extends BaseAdapter {
     private File cwd;
     private boolean preview_images;
 
-    public DirListingAdapter(Context ctx, File[] entries, boolean preview_images) {
+    public DirListingAdapter(Context ctx, File cwd, File[] entries, boolean preview_images) {
         my_context = ctx;
         this.entries = entries;
+        this.cwd = cwd;
         this.preview_images = preview_images;
     }
 
-    public DirListingAdapter(Context ctx, File[] entries) {
+    public DirListingAdapter(Context ctx, File cwd, File[] entries) {
         my_context = ctx;
         this.entries = entries;
+        this.cwd = cwd;
         this.preview_images = false;
     }
 
