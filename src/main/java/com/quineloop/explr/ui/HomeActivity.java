@@ -76,6 +76,7 @@ public class HomeActivity extends Activity {
                 }
             }
         );
+        updateUpAction();
     }
 
     @Override
@@ -174,15 +175,11 @@ public class HomeActivity extends Activity {
             dir_listing.changeEntries(
                 parent_dir, FileSystem.list(parent_dir, this.listing_options), this.preview_imgs
             );
+            updateUpAction();
         } else {
             if( this.count_back_click_for_exit > 0 ) {
                 finish();
             } else {
-                this.preview_imgs = false;
-                preview_imgs_opt.setChecked(false);
-                dir_listing.changeEntries(
-                    null, FileSystem.list(this.listing_options), this.preview_imgs
-                );
                 this.count_back_click_for_exit++;
                 Toast.makeText(
                     this,
@@ -191,7 +188,6 @@ public class HomeActivity extends Activity {
                 ).show();
             }
         }
-        updateUpAction();
     }
 
     public boolean onNavigateUp() {
@@ -202,14 +198,8 @@ public class HomeActivity extends Activity {
             dir_listing.changeEntries(
                 parent_dir, FileSystem.list(parent_dir, listing_options)
             );
-        } else {
-            this.preview_imgs = false;
-            preview_imgs_opt.setChecked(false);
-            dir_listing.changeEntries(
-                null, FileSystem.list(listing_options)
-            );
+            updateUpAction();
         }
-        updateUpAction();
         return false;
     }
 
