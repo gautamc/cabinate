@@ -11,11 +11,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
-
 import android.media.ThumbnailUtils;
-
 import java.io.File;
-
 import com.quineloop.explr.R;
 import com.quineloop.explr.Config;
 
@@ -119,6 +116,12 @@ public class DirListingAdapter extends BaseAdapter {
         }
         text_view.setText(entry.getName());
         return text_view;
+    }
+
+    public void setThumbnailFor(Integer file_ix){
+        System.err.println( " ************** " );
+        System.err.println( file_ix );
+        System.err.println( " ************** " );
     }
 
     private void setDrawableBasedOnType(TextView text_view, File entry) {

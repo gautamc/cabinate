@@ -1,5 +1,6 @@
 package com.quineloop.explr.ui;
 
+import java.io.File;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.os.Bundle;
@@ -13,9 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 import android.util.DisplayMetrics;
 import android.content.res.Configuration;
-
-import java.io.File;
-
 import com.quineloop.explr.R;
 import com.quineloop.explr.Config;
 import com.quineloop.explr.utils.FileSystem;
