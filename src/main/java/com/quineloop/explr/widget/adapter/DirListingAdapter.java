@@ -15,6 +15,7 @@ import android.media.ThumbnailUtils;
 import java.io.File;
 import com.quineloop.explr.R;
 import com.quineloop.explr.Config;
+import com.quineloop.explr.utils.TNailTask;
 
 public class DirListingAdapter extends BaseAdapter {
     private Context my_context;
@@ -41,6 +42,10 @@ public class DirListingAdapter extends BaseAdapter {
         this.cwd = cwd;
         this.preview_images = preview_images;
         this.notifyDataSetChanged();
+        if( this.preview_images ){
+            TNailTask thumbnailing_thread = new TNailTask(this);
+            thumbnailing_thread.execute(entries);
+        }
     }
 
     public void changeEntries(File cwd, File[] entries){
