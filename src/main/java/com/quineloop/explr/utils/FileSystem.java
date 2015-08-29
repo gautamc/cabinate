@@ -17,8 +17,7 @@ public class FileSystem {
 
     public static File initialListingDir() {
         File dir_to_list = new File("/mnt/sdcard");
-        if ( dir_to_list.exists() && dir_to_list.isDirectory() ) {
-        } else {
+        if ( !dir_to_list.exists() || !dir_to_list.isDirectory() ) {
             if( Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED ) {
                 dir_to_list = Environment.getExternalStorageDirectory();
             } else {
