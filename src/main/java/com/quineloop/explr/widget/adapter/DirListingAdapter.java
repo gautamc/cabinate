@@ -1,5 +1,7 @@
 package com.quineloop.explr.widget.adapter;
 
+import java.io.File;
+import java.util.HashMap;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
-import java.io.File;
 import com.quineloop.explr.R;
 import com.quineloop.explr.Config;
 import com.quineloop.explr.utils.TNailTask;
@@ -22,28 +23,36 @@ public class DirListingAdapter extends BaseAdapter {
     private File[] entries;
     private File cwd;
     private boolean preview_images;
+    private HashMap<Integer, BitmapDrawable> drawable_bitmaps;
 
     public DirListingAdapter(Context ctx, File cwd, File[] entries, boolean preview_images) {
         my_context = ctx;
         this.entries = entries;
         this.cwd = cwd;
+        this.drawable_bitmaps = null;
         this.preview_images = preview_images;
+        if( this.preview_images ) {
+            TNailTask thumbnailing_thread = new TNailTask(this, my_context);
+            thumbnailing_thread.execute(entries);
+        }
     }
 
     public DirListingAdapter(Context ctx, File cwd, File[] entries) {
         my_context = ctx;
         this.entries = entries;
         this.cwd = cwd;
+        this.drawable_bitmaps = null;
         this.preview_images = false;
     }
 
     public void changeEntries(File cwd, File[] entries, boolean preview_images){
         this.entries = entries;
         this.cwd = cwd;
+        this.drawable_bitmaps = null;
         this.preview_images = preview_images;
         this.notifyDataSetChanged();
         if( this.preview_images ){
-            TNailTask thumbnailing_thread = new TNailTask(this);
+            TNailTask thumbnailing_thread = new TNailTask(this, my_context);
             thumbnailing_thread.execute(entries);
         }
     }
@@ -51,6 +60,7 @@ public class DirListingAdapter extends BaseAdapter {
     public void changeEntries(File cwd, File[] entries){
         this.entries = entries;
         this.cwd = cwd;
+        this.drawable_bitmaps = null;
         this.preview_images = false;
         this.notifyDataSetChanged();
     }
@@ -92,41 +102,16 @@ public class DirListingAdapter extends BaseAdapter {
         } else {
             text_view = (TextView) existing_view;
         }
-
-        if ( preview_images ) {
-            // TODO: Move this to AsynTask
-            String extn = MimeTypeMap.getFileExtensionFromUrl( entry.getAbsolutePath() );
-            String mime_type = null;
-            if( extn.length() > 0 ) {
-                mime_type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extn);
-            }
-            System.err.println( " ----------------- " + entry.getAbsolutePath() + " : " + mime_type + " ----------------- " );
-            if( mime_type != null && mime_type.equals("image/jpeg") ) {
-                Bitmap source_bitmap = BitmapFactory.decodeFile( entry.getAbsolutePath() );
-                Bitmap small_bitmap = ThumbnailUtils.extractThumbnail(source_bitmap, 58, 58);
-                Drawable drawable_bitmap = new BitmapDrawable(my_context.getResources(), small_bitmap);
-                drawable_bitmap.setBounds(
-                    0,0,
-                    drawable_bitmap.getIntrinsicWidth(),
-                    drawable_bitmap.getIntrinsicHeight()
-                );
-                text_view.setCompoundDrawablesRelative(
-                    null, drawable_bitmap, null, null
-                );
-            } else {
-                setDrawableBasedOnType(text_view, entry);
-            }
-        } else {
-            setDrawableBasedOnType(text_view, entry);
-        }
+        setDrawableBasedOnType(text_view, entry);
         text_view.setText(entry.getName());
         return text_view;
     }
 
-    public void setThumbnailFor(Integer file_ix){
-        System.err.println( " ************** " );
-        System.err.println( file_ix );
-        System.err.println( " ************** " );
+    public void setThumbnailFor(HashMap<Integer, BitmapDrawable> drawable_bitmaps){
+        System.err.println( " **** IN setThumbnailFor() ********** " );
+        this.drawable_bitmaps = drawable_bitmaps;
+        System.err.println( drawable_bitmaps.size() );
+        System.err.println( " **** AFTER setThumbnailFor() ******* " );
     }
 
     private void setDrawableBasedOnType(TextView text_view, File entry) {
