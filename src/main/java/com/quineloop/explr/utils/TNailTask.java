@@ -22,7 +22,7 @@ public class TNailTask extends AsyncTask<File, Void, HashMap<Integer, BitmapDraw
         this.context = context;
     }
 
-    protected HashMap doInBackground(File... image_files) {
+    protected HashMap<Integer, BitmapDrawable> doInBackground(File... image_files) {
         HashMap<Integer, BitmapDrawable> bitmaps = new HashMap<Integer, BitmapDrawable>();
         for( int i = 0; i < image_files.length; i++ ){
             System.err.println( " ******IN ASYNC TASK ************ " + image_files[i].getAbsolutePath() + " ************ " );
