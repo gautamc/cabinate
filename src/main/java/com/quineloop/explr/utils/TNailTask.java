@@ -25,7 +25,6 @@ public class TNailTask extends AsyncTask<File, Void, HashMap<Integer, BitmapDraw
     protected HashMap<Integer, BitmapDrawable> doInBackground(File... image_files) {
         HashMap<Integer, BitmapDrawable> bitmaps = new HashMap<Integer, BitmapDrawable>();
         for( int i = 0; i < image_files.length; i++ ){
-            System.err.println( " ******IN ASYNC TASK ************ " + image_files[i].getAbsolutePath() + " ************ " );
             String extn = MimeTypeMap.getFileExtensionFromUrl( image_files[i].getAbsolutePath() );
             String mime_type = null;
             if( extn.length() > 0 ) {
@@ -51,7 +50,6 @@ public class TNailTask extends AsyncTask<File, Void, HashMap<Integer, BitmapDraw
     }
 
     protected void onPostExecute(HashMap<Integer, BitmapDrawable> bitmaps) {
-        System.err.println(" ************ THUMBNAIL PROCESS COMPLETE ************* " );
         dir_listing.setThumbnailFor(bitmaps);
     }
 }

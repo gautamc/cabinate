@@ -102,16 +102,22 @@ public class DirListingAdapter extends BaseAdapter {
         } else {
             text_view = (TextView) existing_view;
         }
-        setDrawableBasedOnType(text_view, entry);
+
+        if( drawable_bitmaps != null && drawable_bitmaps.containsKey( Integer.valueOf(position) ) ) {
+            text_view.setCompoundDrawablesRelative(
+                null, (BitmapDrawable) drawable_bitmaps.get(Integer.valueOf(position)), null, null
+            );
+        } else {
+            setDrawableBasedOnType(text_view, entry);
+        }
+
         text_view.setText(entry.getName());
         return text_view;
     }
 
     public void setThumbnailFor(HashMap<Integer, BitmapDrawable> drawable_bitmaps){
-        System.err.println( " **** IN setThumbnailFor() ********** " );
         this.drawable_bitmaps = drawable_bitmaps;
-        System.err.println( drawable_bitmaps.size() );
-        System.err.println( " **** AFTER setThumbnailFor() ******* " );
+        this.notifyDataSetChanged();
     }
 
     private void setDrawableBasedOnType(TextView text_view, File entry) {
