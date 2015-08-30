@@ -1,7 +1,7 @@
 package com.quineloop.explr.utils;
 
 import java.io.File;
-import java.util.HashMap;
+import android.util.Pair;
 import android.content.Context;
 import android.webkit.MimeTypeMap;
 import android.graphics.BitmapFactory;
@@ -10,46 +10,56 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.ThumbnailUtils;
 import android.os.AsyncTask;
+import android.net.Uri;
 import com.quineloop.explr.widget.adapter.DirListingAdapter;
 
-public class TNailTask extends AsyncTask<File, Void, HashMap<Integer, BitmapDrawable>> {
+public class TNailTask extends AsyncTask<File, Pair<Integer, BitmapDrawable>, Void> {
 
     private DirListingAdapter dir_listing;
     private Context context;
+    private BitmapFactory.Options bitmap_opts;
 
     public TNailTask(DirListingAdapter dir_listing, Context context) {
+        super();
         this.dir_listing = dir_listing;
         this.context = context;
+        bitmap_opts = new BitmapFactory.Options();
+        bitmap_opts.inJustDecodeBounds = true;
     }
 
-    protected HashMap<Integer, BitmapDrawable> doInBackground(File... image_files) {
-        HashMap<Integer, BitmapDrawable> bitmaps = new HashMap<Integer, BitmapDrawable>();
-        for( int i = 0; i < image_files.length; i++ ){
-            String extn = MimeTypeMap.getFileExtensionFromUrl( image_files[i].getAbsolutePath() );
+    protected Void doInBackground(File... files) {
+        for( int i = 0; i < files.length; i++ ){
+            if( files[i].isDirectory() || !files[i].canRead() ) {
+                continue;
+            }
+            String extn = MimeTypeMap.getFileExtensionFromUrl( files[i].getAbsolutePath() );
             String mime_type = null;
             if( extn.length() > 0 ) {
                 mime_type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extn);
             }
-            System.err.println( " ----------------- " + image_files[i].getAbsolutePath() + " : " + mime_type + " ----------------- " );
+            if( mime_type == null ) {
+                BitmapFactory.decodeFile(files[i].getAbsolutePath(), bitmap_opts);
+                mime_type = bitmap_opts.outMimeType;
+            }
             if( mime_type != null && mime_type.equals("image/jpeg") ) {
-                Bitmap source_bitmap = BitmapFactory.decodeFile( image_files[i].getAbsolutePath() );
-                Bitmap small_bitmap = ThumbnailUtils.extractThumbnail(source_bitmap, 58, 58);
+                Bitmap source_bitmap = BitmapFactory.decodeFile( files[i].getAbsolutePath() );
+                Bitmap small_bitmap = ThumbnailUtils.extractThumbnail(source_bitmap, 56, 56);
                 BitmapDrawable drawable_bitmap = new BitmapDrawable(context.getResources(), small_bitmap);
                 drawable_bitmap.setBounds(
-                    0,0,
+                    0,5,
                     drawable_bitmap.getIntrinsicWidth(),
                     drawable_bitmap.getIntrinsicHeight()
                 );
-                bitmaps.put(Integer.valueOf(i), drawable_bitmap);
+                publishProgress(Pair.create(Integer.valueOf(i), drawable_bitmap));
             }
             if( isCancelled() ) {
                 break;
             }
         }
-        return bitmaps;
+        return null;
     }
 
-    protected void onPostExecute(HashMap<Integer, BitmapDrawable> bitmaps) {
-        dir_listing.setThumbnailFor(bitmaps);
+    protected void onProgressUpdate(Pair<Integer, BitmapDrawable>... progress) {
+        dir_listing.setThumbnailFor(progress[0]);
     }
 }
